@@ -141,6 +141,62 @@ public class Matrix {
     }
 
     /**
+     * Multiplies the matrix by a scalar value
+     *
+     * @param scalar value to multiply by
+     * @return
+     */
+    public Matrix multiplyBy(double scalar) {
+        Matrix result = new Matrix(rows, columns);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result.data[i][j] = data[i][j] * scalar;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Subtracts another matrix from this matrix
+     *
+     * @param matrix matrix to subtract
+     * @return
+     */
+    public Matrix subtract(Matrix matrix) {
+        if (rows != matrix.rows || columns != matrix.columns) {
+            throw new IllegalArgumentException("Matrix dimensions must match in order to subtract");
+        }
+
+        Matrix result = new Matrix(rows, columns);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result.data[i][j] = data[i][j] - matrix.data[i][j];
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Gets the transpose matrix of this matrix
+     * @return
+     */
+    public Matrix transpose() {
+        Matrix transpose = new Matrix(columns, rows);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                transpose.data[j][i] = data[i][j];
+            }
+        }
+
+        return transpose;
+    }
+
+    /**
      * Gets row count
      * @return
      */
@@ -174,5 +230,33 @@ public class Matrix {
         }
 
         return matrix.toString();
+    }
+
+    /**
+     * Converts a nx1 or 1xn matrix to a vector
+     *
+     * @param matrix matrix to convert
+     * @return
+     */
+    public static Vector toVector(Matrix matrix) {
+        if (matrix.rows != 1 && matrix.columns != 1) {
+            throw new IllegalArgumentException("Invalid matrix dimensions when converting to vector");
+        }
+
+        int length = matrix.rows == 1 ? matrix.columns : matrix.rows;
+
+        double[] result = new double[length];
+
+        int row = 0;
+        int column = 0;
+
+        for (int i = 0; i < length; i++) {
+            row = matrix.rows == 1 ? 0 : i;
+            column = matrix.columns == 1 ? 0 : i;
+
+            result[i] = matrix.data[row][column];
+        }
+
+        return new Vector(result);
     }
 }
