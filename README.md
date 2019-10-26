@@ -1,2 +1,2 @@
 # Numerical_Methods_2
-Optimization and 3D plots
+Equation systems, optimization, 3D surface plots and maybe some more stuff
