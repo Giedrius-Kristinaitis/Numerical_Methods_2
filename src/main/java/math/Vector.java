@@ -10,6 +10,7 @@ public class Vector {
 
     /**
      * Class constructor
+     *
      * @param data
      */
     public Vector(double[] data) {
@@ -37,14 +38,30 @@ public class Vector {
     }
 
     /**
+     * Gets the norm of the vector
+     *
+     * @return
+     */
+    public double norm() {
+        double sum = 0;
+
+        for (int i = 0; i < data.length; i++) {
+            sum += data[i] * data[i];
+        }
+
+        return Math.sqrt(sum);
+    }
+
+    /**
      * Converts the vector to a string
+     *
      * @return
      */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        for (double element: data) {
+        for (double element : data) {
             result.append(element);
             result.append(' ');
         }

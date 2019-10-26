@@ -13,7 +13,7 @@ public class Matrix {
     /**
      * Class constructor
      *
-     * @param rows row count
+     * @param rows    row count
      * @param columns column count
      */
     public Matrix(int rows, int columns) {
@@ -39,8 +39,8 @@ public class Matrix {
     /**
      * Sets the specified element
      *
-     * @param value element value
-     * @param row row
+     * @param value  element value
+     * @param row    row
      * @param column column
      */
     public void setElement(double value, int row, int column) {
@@ -50,7 +50,7 @@ public class Matrix {
     /**
      * Gets the specified element
      *
-     * @param row row
+     * @param row    row
      * @param column column
      * @return
      */
@@ -61,26 +61,10 @@ public class Matrix {
     /**
      * Gets a column as a matrix
      *
-     * @param row row number
-     * @return
-     */
-    public Matrix getColumn(int row) {
-        Matrix result = new Matrix(1, columns);
-
-        for (int i = 0; i < columns; i++) {
-            result.setElement(data[row][i], 0, i);
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets a row as a matrix
-     *
      * @param column column number
      * @return
      */
-    public Matrix getRow(int column) {
+    public Matrix getColumn(int column) {
         Matrix result = new Matrix(rows, 1);
 
         for (int i = 0; i < rows; i++) {
@@ -91,9 +75,25 @@ public class Matrix {
     }
 
     /**
-     * Sets a column
+     * Gets a row as a matrix
      *
      * @param row row number
+     * @return
+     */
+    public Matrix getRow(int row) {
+        Matrix result = new Matrix(1, columns);
+
+        for (int i = 0; i < columns; i++) {
+            result.setElement(data[row][i], 0, i);
+        }
+
+        return result;
+    }
+
+    /**
+     * Sets a column
+     *
+     * @param row    row number
      * @param column column data as a matrix
      */
     public void setColumn(int row, Matrix column) {
@@ -104,7 +104,7 @@ public class Matrix {
      * Sets a row
      *
      * @param column column number
-     * @param row row data as a matrix
+     * @param row    row data as a matrix
      */
     public void setRow(int column, Matrix row) {
         for (int i = 0; i < row.rows; i++) {
@@ -159,6 +159,24 @@ public class Matrix {
     }
 
     /**
+     * Divides the matrix by a scalar value
+     *
+     * @param scalar value to divide by
+     * @return
+     */
+    public Matrix divideBy(double scalar) {
+        Matrix result = new Matrix(rows, columns);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result.data[i][j] = data[i][j] / scalar;
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Subtracts another matrix from this matrix
      *
      * @param matrix matrix to subtract
@@ -182,6 +200,7 @@ public class Matrix {
 
     /**
      * Gets the transpose matrix of this matrix
+     *
      * @return
      */
     public Matrix transpose() {
@@ -198,6 +217,7 @@ public class Matrix {
 
     /**
      * Gets row count
+     *
      * @return
      */
     public int getRows() {
@@ -206,6 +226,7 @@ public class Matrix {
 
     /**
      * Gets column count
+     *
      * @return
      */
     public int getColumns() {
@@ -214,6 +235,7 @@ public class Matrix {
 
     /**
      * Converts the matrix to a string
+     *
      * @return
      */
     @Override
