@@ -4,8 +4,6 @@ import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Chart;
 import org.jzy3d.chart.controllers.mouse.camera.AWTCameraMouseController;
 import org.jzy3d.colors.Color;
-import org.jzy3d.colors.ColorMapper;
-import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.maths.Range;
 import org.jzy3d.plot3d.builder.Builder;
 import org.jzy3d.plot3d.builder.Mapper;
@@ -39,15 +37,38 @@ public class SurfacePlot {
 
         // Create a surface drawing that function
         Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
-        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), -Math.pow(bounds, 2), Math.pow(bounds, 2)));
-        surface.setFaceDisplayed(true);
         surface.setWireframeDisplayed(true);
         surface.setWireframeColor(Color.BLACK);
+        surface.setFaceDisplayed(false);
 
         // Create a chart and add the surface
         Chart chart = new AWTChart(Quality.Advanced);
         chart.add(surface);
+        addZeroSurface(chart, range, steps);
         chart.addController(new AWTCameraMouseController());
         chart.open(title, 512, 512);
+    }
+
+    /**
+     * Adds Z = 0 surface surfaces
+     *
+     * @param chart
+     * @param range
+     * @param steps
+     */
+    private static void addZeroSurface(Chart chart, Range range, int steps) {
+        Mapper mapper = new Mapper() {
+            @Override
+            public double f(double v, double v1) {
+                return 0;
+            }
+        };
+
+        Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
+        surface.setFaceDisplayed(false);
+        surface.setWireframeDisplayed(true);
+        surface.setWireframeColor(Color.RED);
+
+        chart.add(surface);
     }
 }
