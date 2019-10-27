@@ -1,11 +1,11 @@
-package math.function;
+package math.function.system.second;
 
 import math.Function;
 
 /**
  * Function
  */
-public class FirstSystemFunction1 implements Function {
+public class SecondSystemFunction2 implements Function {
 
     /**
      * Gets function value with the specified variables
@@ -14,22 +14,27 @@ public class FirstSystemFunction1 implements Function {
      * @return
      */
     public double getValue(double... vars) {
-        return Math.pow(vars[0], 2) + 10 * Math.pow(Math.sin(vars[0]) + Math.cos(vars[1]), 2) - 10;
+        return -Math.pow(vars[0], 2) + Math.pow(vars[2], 2) + 5;
     }
 
     /**
      * Gets function derivative value with respect to the variable at the specified
      * index with the given variable values
      *
-     * @param vars     variables
      * @param varIndex variable index
+     * @param vars     variables
      * @return
      */
     public double getDerivativeValue(int varIndex, double... vars) {
-        if (varIndex == 0) {
-            return 2 * vars[0] + 20 * Math.cos(vars[0]) * (Math.sin(vars[0]) + Math.cos(vars[1]));
-        } else {
-            return -20 * Math.sin(vars[1]) * (Math.sin(vars[0]) + Math.cos(vars[1]));
+        switch (varIndex) {
+            case 0:
+                return -2 * vars[0];
+            case 2:
+                return 2 * vars[2];
+            case 1:
+            case 3:
+            default:
+                return 0;
         }
     }
 }

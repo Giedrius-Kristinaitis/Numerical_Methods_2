@@ -1,17 +1,20 @@
 package main;
 
+import math.Function;
 import math.Matrix;
-import org.jzy3d.chart.AWTChart;
-import org.jzy3d.chart.Chart;
+import math.function.FirstSurface;
+import math.function.system.first.FirstSystemFunction1;
+import math.function.system.first.FirstSystemFunction2;
+import math.function.SecondSurface;
+import math.function.system.second.SecondSystemFunction1;
+import math.function.system.second.SecondSystemFunction2;
+import math.function.system.second.SecondSystemFunction3;
+import math.function.system.second.SecondSystemFunction4;
+import math.plot.FunctionZ;
+import math.plot.SurfacePlot;
+import methods.NewtonsEquationSystem;
+import methods.QRDecomposition;
 import org.jzy3d.colors.Color;
-import org.jzy3d.colors.ColorMapper;
-import org.jzy3d.colors.colormaps.ColorMapRainbow;
-import org.jzy3d.maths.Range;
-import org.jzy3d.plot3d.builder.Builder;
-import org.jzy3d.plot3d.builder.Mapper;
-import org.jzy3d.plot3d.builder.concrete.OrthonormalGrid;
-import org.jzy3d.plot3d.primitives.Shape;
-import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 /**
  * Starter class
@@ -24,46 +27,72 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        /**
-         // Define a function to plot
-         Mapper mapper = new Mapper() {
-         public double f(double x, double y) {
-         return 10 * Math.sin(x / 10) * Math.cos(y / 20);
-         }
-         };
+        QRDecomposition qr = new QRDecomposition();
 
-         // Define range and precision for the function to plot
-         Range range = new Range(-150, 150);
-         int steps = 100;
-
-         // Create a surface drawing that function
-         Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
-         surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), -10D, 10D));
-         surface.setFaceDisplayed(true);
-         surface.setWireframeDisplayed(true);
-         surface.setWireframeColor(Color.BLACK);
-
-         // Create a chart and add the surface
-         Chart chart = new AWTChart(Quality.Advanced);
-         chart.add(surface);
-         chart.open("Jzy3d Demo", 600, 600);*/
-
-        Matrix a = new Matrix(2, 3);
-        Matrix b = new Matrix(3, 2);
+        Matrix a = new Matrix(4, 4);
+        Matrix b = new Matrix(4, 1);
 
         a.initialize(new double[][] {
-                {1, 2, 3},
-                {4, 5, 6}
+                {3, 1, -1, 1},
+                {1, -2, 3, 1},
+                {2, -9, 5, 2},
+                {1, -7, 2, 1}
         });
 
         b.initialize(new double[][] {
-                {7, 8},
-                {9, 10},
-                {11, 12}
+                {27},
+                {24},
+                {27},
+                {3}
         });
 
-        Matrix c = a.multiplyBy(b);
+        Matrix x = qr.execute(a, b);
 
-        System.out.println(c.toString());
+        System.out.println("Tiesines lygciu sistemos sprendiniai: ");
+        System.out.println(x);
+
+        NewtonsEquationSystem n = new NewtonsEquationSystem();
+
+        n.execute(new Function[] {
+                new FirstSystemFunction1(),
+                new FirstSystemFunction2(),
+        }, new double[] {
+                1, 1
+        });
+
+        n.execute(new Function[] {
+                new SecondSystemFunction1(),
+                new SecondSystemFunction2(),
+                new SecondSystemFunction3(),
+                new SecondSystemFunction4()
+        }, new double[] {
+                1, 1, 1, 1
+        });
+
+        SurfacePlot.plotSurfaces(
+                "Z1",
+                new FunctionZ[] {
+                        new FirstSurface()
+                },
+                new Color[] {
+                        Color.BLACK
+                },
+                10,
+                true,
+                Color.RED
+        );
+
+        SurfacePlot.plotSurfaces(
+                "Z2",
+                new FunctionZ[] {
+                        new SecondSurface()
+                },
+                new Color[] {
+                        Color.BLACK
+                },
+                10,
+                true,
+                Color.YELLOW
+        );
     }
 }

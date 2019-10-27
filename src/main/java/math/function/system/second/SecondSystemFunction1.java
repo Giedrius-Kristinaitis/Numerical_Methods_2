@@ -1,11 +1,11 @@
-package math.function;
+package math.function.system.second;
 
 import math.Function;
 
 /**
  * Function
  */
-public class FirstSystemFunction2 implements Function {
+public class SecondSystemFunction1 implements Function {
 
     /**
      * Gets function value with the specified variables
@@ -14,7 +14,7 @@ public class FirstSystemFunction2 implements Function {
      * @return
      */
     public double getValue(double... vars) {
-        return Math.pow(vars[1] - 3, 2) + vars[0] - 8;
+        return 5 * vars[0] + vars[1] + vars[2] + 4 * vars[3] + 5;
     }
 
     /**
@@ -26,10 +26,17 @@ public class FirstSystemFunction2 implements Function {
      * @return
      */
     public double getDerivativeValue(int varIndex, double... vars) {
-        if (varIndex == 0) {
-            return 1;
-        } else {
-            return 2 * vars[1] - 6;
+        switch (varIndex) {
+            case 0:
+                return 5;
+            case 1:
+                return 1;
+            case 2:
+                return 1;
+            case 3:
+                return 4;
+            default:
+                return 0;
         }
     }
 }
