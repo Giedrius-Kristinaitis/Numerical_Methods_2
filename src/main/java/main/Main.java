@@ -61,6 +61,27 @@ public class Main {
         });
 
         n.execute(new Function[] {
+                new FirstSystemFunction1(),
+                new FirstSystemFunction2(),
+        }, new double[] {
+                2, 2
+        });
+
+        n.execute(new Function[] {
+                new FirstSystemFunction1(),
+                new FirstSystemFunction2(),
+        }, new double[] {
+                3, -3
+        });
+
+        n.execute(new Function[] {
+                new FirstSystemFunction1(),
+                new FirstSystemFunction2(),
+        }, new double[] {
+                -4, 4
+        });
+
+        n.execute(new Function[] {
                 new SecondSystemFunction1(),
                 new SecondSystemFunction2(),
                 new SecondSystemFunction3(),
