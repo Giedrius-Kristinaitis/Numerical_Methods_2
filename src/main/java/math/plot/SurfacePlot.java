@@ -39,7 +39,7 @@ public class SurfacePlot {
 
         // Create a surface drawing that function
         Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
-        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), -10000D, 10000D));
+        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), -Math.pow(bounds, 2), Math.pow(bounds, 2)));
         surface.setFaceDisplayed(true);
         surface.setWireframeDisplayed(true);
         surface.setWireframeColor(Color.BLACK);
