@@ -71,14 +71,14 @@ public class Main {
                 new FirstSystemFunction1(),
                 new FirstSystemFunction2(),
         }, new double[] {
-                3, -3
+                3, 3
         });
 
         n.execute(new Function[] {
                 new FirstSystemFunction1(),
                 new FirstSystemFunction2(),
         }, new double[] {
-                -4, 4
+                4, 4
         });
 
         n.execute(new Function[] {
