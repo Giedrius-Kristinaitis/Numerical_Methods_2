@@ -17,7 +17,8 @@ public class QRDecomposition {
      * @return x matrix
      */
     public Matrix execute(Matrix a, Matrix b) {
-        Matrix qt = getQt(a);
+        Matrix q = getQ(a);
+        Matrix qt = q.transpose();
         Matrix r = qt.multiplyBy(a);
 
         return getXMatrix(r, qt, b);
@@ -38,7 +39,7 @@ public class QRDecomposition {
 
         Matrix x = new Matrix(r.getColumns(), 1);
 
-        x.setElement(r.getElement(r.getRows() - 1, r.getColumns() - 1), x.getRows() - 1, 0);
+        x.setElement(b.getElement(b.getRows() - 1, 0) / r.getElement(r.getRows() - 1, r.getColumns() - 1), x.getRows() - 1, 0);
 
         for (int i = r.getRows() - 2; i >= 0; i--) {
             double leftSide = 0;
@@ -57,12 +58,12 @@ public class QRDecomposition {
     }
 
     /**
-     * Gets Qt matrix
+     * Gets Q matrix
      *
      * @param a A matrix
      * @return
      */
-    private Matrix getQt(Matrix a) {
+    private Matrix getQ(Matrix a) {
         Matrix[] qParts = new Matrix[a.getColumns()];
 
         qParts[0] = a.getColumn(0);
@@ -72,7 +73,7 @@ public class QRDecomposition {
             Matrix qi = column;
 
             /**
-             * Q[i] = A[i] - (ProjQ[i-1]A[i])Q[i-1]
+             * Q[i] = A[i] - (ProjQ[i-1]A[i])
              */
             for (int j = 0; j < i; j++) {
                 qi = qi.subtract(qParts[j].multiplyBy(Matrix.toVector(column).scalarMultiply(Matrix.toVector(qParts[j])) / Matrix.toVector(qParts[j]).scalarMultiply(Matrix.toVector(qParts[j]))));
@@ -81,7 +82,7 @@ public class QRDecomposition {
             qParts[i] = qi;
         }
 
-        return buildQtFromParts(qParts);
+        return buildQFromParts(qParts);
     }
 
     /**
@@ -90,7 +91,7 @@ public class QRDecomposition {
      * @param parts parts to build from
      * @return
      */
-    private Matrix buildQtFromParts(Matrix[] parts) {
+    private Matrix buildQFromParts(Matrix[] parts) {
         Matrix q = new Matrix(parts[0].getRows(), parts.length);
 
         for (int i = 0; i < parts.length; i++) {
