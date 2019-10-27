@@ -17,57 +17,60 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
 public class SurfacePlot {
 
     /**
-     * Plots a 3D surface
+     * Plots 3D surfaces
      *
-     * @param title chart title
-     * @param function surface function
-     * @param bounds plot bounds
+     * @param title
+     * @param functions
+     * @param colors
+     * @param bounds
+     * @param displayZeroSurface
+     * @param zeroSurfaceColor
      */
-    public static void plotSurface(String title, final FunctionZ function, float bounds) {
-        // Define a function to plot
-        Mapper mapper = new Mapper() {
-            public double f(double x, double y) {
-                return function.value(x, y);
-            }
-        };
-
+    public static void plotSurfaces(String title, final FunctionZ[] functions, Color[] colors, float bounds, boolean displayZeroSurface, Color zeroSurfaceColor) {
         // Define range and precision for the function to plot
         Range range = new Range(-bounds, bounds);
-        int steps = 100;
 
-        // Create a surface drawing that function
-        Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
-        surface.setWireframeDisplayed(true);
-        surface.setWireframeColor(Color.BLACK);
-        surface.setFaceDisplayed(false);
-
-        // Create a chart and add the surface
+        // Create a chart and add the surfaces
         Chart chart = new AWTChart(Quality.Advanced);
-        chart.add(surface);
-        addZeroSurface(chart, range, steps);
+
+        // add all surfaces
+        for (int i = 0; i < functions.length; i++) {
+            createSurface(chart, functions[i], range, colors[i]);
+        }
+
+        // add z = 0 surface
+        if (displayZeroSurface) {
+            createSurface(chart, new FunctionZ() {
+                public double value(double x, double y) {
+                    return 0;
+                }
+            }, range, zeroSurfaceColor);
+        }
+
         chart.addController(new AWTCameraMouseController());
         chart.open(title, 512, 512);
     }
 
     /**
-     * Adds Z = 0 surface surfaces
+     * Creates and adds a 3D surface
      *
      * @param chart
+     * @param function
      * @param range
-     * @param steps
+     * @param color
      */
-    private static void addZeroSurface(Chart chart, Range range, int steps) {
+    private static void createSurface(Chart chart, final FunctionZ function, Range range, Color color) {
         Mapper mapper = new Mapper() {
             @Override
             public double f(double v, double v1) {
-                return 0;
+                return function.value(v, v1);
             }
         };
 
-        Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper);
+        Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, 100), mapper);
         surface.setFaceDisplayed(false);
         surface.setWireframeDisplayed(true);
-        surface.setWireframeColor(Color.RED);
+        surface.setWireframeColor(color);
 
         chart.add(surface);
     }
