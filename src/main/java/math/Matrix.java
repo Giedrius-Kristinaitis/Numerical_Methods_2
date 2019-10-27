@@ -199,6 +199,28 @@ public class Matrix {
     }
 
     /**
+     * Adds another matrix to this matrix
+     *
+     * @param matrix matrix to add
+     * @return
+     */
+    public Matrix add(Matrix matrix) {
+        if (rows != matrix.rows || columns != matrix.columns) {
+            throw new IllegalArgumentException("Matrix dimensions must match in order to add");
+        }
+
+        Matrix result = new Matrix(rows, columns);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result.data[i][j] = data[i][j] + matrix.data[i][j];
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Gets the transpose matrix of this matrix
      *
      * @return
